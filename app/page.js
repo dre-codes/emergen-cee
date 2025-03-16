@@ -1,8 +1,11 @@
 "use client";
 import Head from "next/head";
 import { signIn } from "next-auth/react";
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
+  const router = useRouter();
+
   const handleSignIn = () => {
     signIn();
   };
@@ -37,7 +40,7 @@ export default function Home() {
         <p className="relative mt-4 text-lg z-10">
           Get personalized healthcare at your fingertips.
         </p>
-        <button className="relative mt-6 bg-white text-blue-600 px-6 py-3 rounded-md font-semibold hover:bg-gray-200 z-10">
+        <button className="relative mt-6 bg-white text-blue-600 px-6 py-3 rounded-md font-semibold hover:bg-gray-200 z-10" onClick={()=>{router.push('/register')}}>
           Get Started
         </button>
       </header>

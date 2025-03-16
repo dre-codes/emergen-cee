@@ -1,51 +1,9 @@
 "use client";
 import { useState, useCallback, useEffect } from "react";
 import { useSession } from "next-auth/react";
+import { useRouter } from 'next/navigation';
 
 import Swal from "sweetalert2";
-
-// const handleSubmit = (event) => {
-//   event.preventDefault();
-//   const data = new FormData(event.target);
-//   const name = data.get("name");
-//   const age = data.get("age");
-//   const gender = data.get("gender");
-//   const phone = data.get("phone");
-//   const address = data.get("address");
-//   const symptoms = data.get("symptoms");
-//   const admissionDate = data.get("admissionDate");
-//   const dischargeDate = data.get("dischargeDate");
-//   const diagnosis = data.get("diagnosis");
-//   const medication = data.get("medication");
-//   const severity = data.get("severity");
-
-//   console.log("called");
-//   fetch("/api/scoring", {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify({
-//       name,
-//       age,
-//       gender,
-//       phone,
-//       address,
-//       symptoms,
-//       admissionDate,
-//       dischargeDate,
-//       diagnosis,
-//       medication,
-//       severity,
-//     }),
-//   })
-//     .then((response) => response.json())
-//     .then((data) => {
-//       console.log("done");
-//     });
-
-//   return;
-// };
 
 const handleSubmit = (e) => {
   e.preventDefault(); // Prevent default form submission
@@ -64,9 +22,24 @@ const handleSubmit = (e) => {
     .then((data) => {
       console.log("Form submitted:", data);
       Swal.fire({
-        title: "Patient Info Saved!",
-        text: "Thank you",
-        icon: "success",
+        title: "<strong>Patient's Update</strong>",
+        icon: "info",
+        html: `
+          This patient diagnosis: ${data.response.diagnosis}<br>
+          This patient severity: ${data.response.severity}<br>
+          This patient estimated wait time: ${data.response.estimatedWaitTime}
+        `,
+        showCloseButton: true,
+        showCancelButton: true,
+        focusConfirm: false,
+        confirmButtonText: `
+          <i class="fa fa-thumbs-up"></i> Great!
+        `,
+        confirmButtonAriaLabel: "Thumbs up, great!",
+        cancelButtonText: `
+          <i class="fa fa-thumbs-down"></i>
+        `,
+        cancelButtonAriaLabel: "Thumbs down"
       });
     })
     .catch((error) => console.error("Error:", error));
