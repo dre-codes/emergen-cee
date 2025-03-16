@@ -1,7 +1,6 @@
 "use client";
 import { useState, useCallback, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import { useRouter } from 'next/navigation';
 
 import Swal from "sweetalert2";
 
@@ -40,6 +39,11 @@ const handleSubmit = (e) => {
           <i class="fa fa-thumbs-down"></i>
         `,
         cancelButtonAriaLabel: "Thumbs down"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = '/patients';
+          
+        }
       });
     })
     .catch((error) => console.error("Error:", error));
