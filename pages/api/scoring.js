@@ -1,6 +1,7 @@
 // Use `require` to import `formidable` in this case
 const formidable = require("formidable"); // CommonJS import style
 import openai from "@/lib/openai_config";
+import supabase from "@/lib/supabase";
 
 export const config = {
   api: {
@@ -50,6 +51,30 @@ const handleSubmit = async (req, res) => {
       };
 
       console.log("OpenAI Response:", response.choices[0].message.content);
+
+      console.log("==========================================================");
+      console.log("Attempting to Insert into DB ");
+      console.log("==========================================================");
+      //const userId = await getUserID(email);
+
+      const { data: patientData, error: dberror } = await supabase
+        .from("Patients")
+        .insert([
+          {
+            name: fields.name,
+            age: fields.age,
+            severity: fields.severity,
+            symptoms: symptoms,
+            address: fields.address,
+            diagnosis: patientInfo.diagnosis,
+          },
+        ]);
+
+      if (dberror) {
+        console.error("Error inserting data:", dberror.message);
+        res.status(500).json({ message: "Internal server error" });
+        return;
+      }
 
       // Send the OpenAI response back to the client
       res.status(200).json({
